@@ -72,6 +72,7 @@ void main() {
     expect(find.text('Home'), findsOneWidget);
     expect(find.text('Catalog'), findsOneWidget);
     expect(find.text('Cart'), findsOneWidget);
+    expect(find.text('Orders'), findsOneWidget);
     expect(find.text('Account'), findsOneWidget);
   });
 }

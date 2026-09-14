@@ -46,7 +46,8 @@ class BottomNavBar extends ConsumerWidget {
                 'Cart',
                 badgeCount: cartState.totalItemCount,
               ),
-              _buildNavItem(3, Icons.person_rounded, 'Account'),
+              _buildNavItem(3, Icons.receipt_long_rounded, 'Orders'),
+              _buildNavItem(4, Icons.person_rounded, 'Account'),
             ],
           ),
         ),
@@ -64,7 +65,7 @@ class BottomNavBar extends ConsumerWidget {
       onTap: () => onTap(index),
       borderRadius: BorderRadius.circular(12),
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+        padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [

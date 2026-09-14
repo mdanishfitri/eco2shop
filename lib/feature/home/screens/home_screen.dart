@@ -7,6 +7,7 @@ import 'package:eco2shop/feature/products/providers/product_provider.dart';
 import 'package:eco2shop/feature/products/screens/product_detail_screen.dart';
 import 'package:eco2shop/feature/products/screens/product_catalog_screen.dart';
 import 'package:eco2shop/feature/cart/screens/cart_screen.dart';
+import 'package:eco2shop/feature/orders/screens/order_history_screen.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
@@ -108,7 +109,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
           _buildHomeView(),
           const ProductCatalogScreen(),
           const CartScreen(),
-          _buildAccountPlaceholderView(),
+          const OrderHistoryScreen(),
+          _buildAccountView(),
         ],
       ),
     );
@@ -448,7 +450,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
     );
   }
 
-  Widget _buildAccountPlaceholderView() {
+  Widget _buildAccountView() {
     return Scaffold(
       backgroundColor: const Color(0xFFF8F9FD),
       appBar: AppBar(
