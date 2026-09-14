@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:eco2shop/api/api_service.dart';
 import 'package:eco2shop/api/api_exception.dart';
@@ -58,6 +59,8 @@ class ProductState {
 }
 
 class ProductNotifier extends Notifier<ProductState> {
+  int _searchGeneration = 0;
+
   @override
   ProductState build() {
     return const ProductState();
@@ -145,12 +148,66 @@ class ProductNotifier extends Notifier<ProductState> {
   }
 
   Future<void> searchProducts(String query) async {
-    state = state.copyWith(searchQuery: query, selectedCategory: '');
-    await fetchProducts(isRefresh: true);
+    _searchGeneration++;
+    final myGeneration = _searchGeneration;
+
+    state = state.copyWith(
+      searchQuery: query,
+      selectedCategory: '',
+      products: [],
+      total: 0,
+      skip: 0,
+      clearError: true,
+      isLoading: true,
+    );
+
+    try {
+      final ProductResponse response;
+      if (query.trim().isEmpty) {
+        response = await _apiService.getProducts(limit: state.limit, skip: 0);
+      } else {
+        response = await _apiService.searchProducts(query, limit: state.limit, skip: 0);
+      }
+
+      if (_searchGeneration != myGeneration) return;
+
+      state = state.copyWith(
+        products: response.products,
+        total: response.total,
+        skip: response.products.length,
+        isLoading: false,
+        clearError: true,
+      );
+    } on ApiException catch (e) {
+      if (_searchGeneration != myGeneration) return;
+      state = state.copyWith(
+        errorMessage: e.message,
+        isLoading: false,
+      );
+    } catch (e) {
+      if (_searchGeneration != myGeneration) return;
+      state = state.copyWith(
+        errorMessage: 'An unexpected error occurred: $e',
+        isLoading: false,
+      );
+    }
   }
 
   Future<void> clearSearch() async {
     state = state.copyWith(searchQuery: '', selectedCategory: '');
+    await fetchProducts(isRefresh: true);
+  }
+
+  Future<void> resetToHome() async {
+    _searchGeneration++;
+    state = state.copyWith(
+      searchQuery: '',
+      selectedCategory: '',
+      products: [],
+      total: 0,
+      skip: 0,
+      clearError: true,
+    );
     await fetchProducts(isRefresh: true);
   }
 }
