@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:eco2shop/feature/cart/providers/cart_provider.dart';
+import 'package:eco2shop/feature/checkout/screens/checkout_screen.dart';
 import 'package:eco2shop/feature/products/screens/product_detail_screen.dart';
 
 class CartScreen extends ConsumerWidget {
@@ -328,10 +329,9 @@ class CartScreen extends ConsumerWidget {
                           width: double.infinity,
                           child: ElevatedButton(
                             onPressed: () {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  content: Text(
-                                      'Checkout functionality simulation!'),
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (_) => const CheckoutScreen(),
                                 ),
                               );
                             },
