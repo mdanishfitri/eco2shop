@@ -62,6 +62,32 @@ class ApiService {
     }
   }
 
+  Future<ProductResponse> getProductsByCategory(
+    String category, {
+    int limit = 20,
+    int skip = 0,
+  }) async {
+    try {
+      final uri = Uri.parse(
+        '$baseUrl/products/category/${Uri.encodeComponent(category)}?limit=$limit&skip=$skip',
+      );
+      final response = await _client.get(
+        uri,
+        headers: {'Content-Type': 'application/json'},
+      );
+
+      final data = _processResponse(response) as Map<String, dynamic>;
+      return ProductResponse.fromJson(data);
+    } on ApiException {
+      rethrow;
+    } catch (e) {
+      throw ApiException(
+        statusCode: 0,
+        message: 'Network error or invalid request: $e',
+      );
+    }
+  }
+
   Future<Product> getProductById(int id) async {
     try {
       final uri = Uri.parse('$baseUrl/products/$id');
